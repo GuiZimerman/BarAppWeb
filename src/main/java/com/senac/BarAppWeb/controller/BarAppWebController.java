@@ -55,5 +55,10 @@ public class BarAppWebController {
     public String buscarNomeCliente(@PathVariable("buscaNome") String nome, Model model) {
         return "abrirConta";
     }
+    
+    @GetMapping("/estoque")
+    public String mostrarEstoque() {
+        return "estoque";
+    }
 }
 
