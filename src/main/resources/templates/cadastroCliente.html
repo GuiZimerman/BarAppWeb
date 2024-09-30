@@ -9,22 +9,30 @@
     </head>
     <body>
         <header th:insert="header.html"></header>
-        <main  class="container mt-3">
-            <h1>Cadastrar Cliente</h1>
-            <form id="clienteForm" th:action="@{/cadastroCliente}" method="post">    
+        <main class="container mt-5 p-4 bg-light shadow rounded">
+            <h1 class="text-center mb-4">Cadastrar Cliente</h1>
+
+            <form id="clienteForm" th:action="@{/cadastroCliente}" method="post">
                 <div class="mb-3">
-                    <label for="nomeCliente" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="nome" name="nomeCliente" placeholder="Digite digite o nome do Cliente" required>
+                    <label for="nomeCliente" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nomeCliente" placeholder="Digite o nome do Cliente" required>
                 </div>
+                
                 <div class="mb-3">
                     <label for="telefone" class="form-label">Telefone</label>
-                    <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="Digite digite o telefone do Cliente" required>
+                    <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="Digite o telefone do Cliente" required>
                 </div>
+
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-secondary m-1">Cancelar</a>    
-                    <button type="submit" class="btn btn-primary m-1">Salvar Filme</button>
+                    <a th:href="@{atendimento}" class="btn btn-secondary m-1">Cancelar</a>
+                    <button type="submit" class="btn btn-primary m-1">Salvar Cliente</button>
                 </div>
-            </form>        
-        </main>    
+            </form>
+        </main>
+        
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script th:src="@{/js/script.js}"></script>
     </body>
 </html>

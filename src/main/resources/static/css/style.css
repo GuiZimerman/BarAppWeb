@@ -20,3 +20,7 @@ a {
 .nav-link:hover {
     color: #000099; 
 }
+
+.selected {
+    background-color: #d1ecf1; /* Cor de fundo da linha selecionada */
+}
