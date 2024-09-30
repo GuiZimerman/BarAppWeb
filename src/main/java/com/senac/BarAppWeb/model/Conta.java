@@ -22,7 +22,7 @@ public class Conta {
         return idConta;
     }
 
-    public void setIdConta(int idConta) {
+    public void setIdConta(Integer idConta) {
         this.idConta = idConta;
     }
 
