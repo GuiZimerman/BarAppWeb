@@ -1,5 +1,6 @@
 package com.senac.BarAppWeb.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +12,14 @@ import jakarta.persistence.OneToOne;
 public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idConta")
     private int idConta;
     @OneToOne
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
+    @Column(name = "statusPagamento")
     private boolean statusPagamento;
+    @Column(name = "valorTotal")
     private double valorTotal;
 
     public int getIdConta() {

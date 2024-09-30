@@ -9,8 +9,23 @@
     </head>
     <body>
         <header th:insert="header.html"></header>
-        <div>
-        <h1>Contas Abertas</h1>
-        </div>
+        <main class="container">
+            <div>
+            <h1>Contas Abertas</h1>
+            </div>
+            <table id="contaTabela" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Título</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tr th:each="conta : ${listaContaAbertas}">
+                    <td th:text="${filme.idConta}"></td>
+                    <td th:text="${filme.cliente}"></td>
+                    <td th:text="${filme.valorTotal}"></td>
+                </tr>
+        </main>    
     </body>
 </html>
