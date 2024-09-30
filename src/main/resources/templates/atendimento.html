@@ -9,7 +9,7 @@
     </head>
     <body>
         <header th:insert="header.html"></header>
-        <main class="container">
+        <main class="container mt-3">
             <div>
             <h1>Contas Abertas</h1>
             </div>
@@ -26,6 +26,10 @@
                     <td th:text="${filme.cliente}"></td>
                     <td th:text="${filme.valorTotal}"></td>
                 </tr>
-        </main>    
+        </main>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script th:src="@{/js/script.js}"></script>
     </body>
 </html>
