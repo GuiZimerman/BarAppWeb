@@ -65,5 +65,10 @@ public class BarAppWebController {
     public String mostrarContaDetalhada() {
         return "contaDetalhada";
     }
+    
+    @GetMapping("/fazerPedido")
+    public String mostrarFazerPedido(){
+        return "fazerPedido";
+    }
 }
 
