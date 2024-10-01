@@ -60,5 +60,10 @@ public class BarAppWebController {
     public String mostrarEstoque() {
         return "estoque";
     }
+    
+    @GetMapping("/contaDetalhada") 
+    public String mostrarContaDetalhada() {
+        return "contaDetalhada";
+    }
 }
 
