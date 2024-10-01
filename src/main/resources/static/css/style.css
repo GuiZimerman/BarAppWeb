@@ -22,5 +22,7 @@ a {
 }
 
 .selected {
-    background-color: #d1ecf1; /* Cor de fundo da linha selecionada */
+    background-color: #3399ff !important; /* Cor de fundo azul */
+    color: white !important; /* Cor do texto em branco */
+    font-weight: bold !important; /* Texto em negrito */
 }
