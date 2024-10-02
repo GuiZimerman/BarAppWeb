@@ -33,10 +33,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>01</td>
-                            <td>Rafael Almeida</td>
-                            <td>(54)982567548</td>
+                        <tr th:each="cliente : ${listaClientes}">
+                            <td th:text="${cliente.idCliente}"></td>
+                            <td th:text="${cliente.nomeCliente}"></td>
+                            <td th:text="${cliente.telefone}"></td>
                         </tr>
                     </tbody>
                 </table> 
@@ -44,7 +44,7 @@
 
             <div class="d-flex justify-content-center">
                 <a th:href="@{/atendimento}" class="btn btn-secondary m-1">Cancelar</a>    
-                <button type="submit" class="btn btn-primary m-1">Salvar Filme</button>
+                <button type="submit" class="btn btn-primary m-1">Abrir Conta</button>
             </div>
         </main> 
         

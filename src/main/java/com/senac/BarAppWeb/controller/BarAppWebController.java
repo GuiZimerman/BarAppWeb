@@ -43,11 +43,13 @@ public class BarAppWebController {
     public String fazerCadastro(@ModelAttribute("cliente") Cliente novoCliente, Model model) {
        clienteService.criarCliente(novoCliente);
        model.addAttribute("mensagem", "Cliente cadastrado com sucesso!");
-       return "atendimento";
+       return "redirect:/abrirConta";
     }
     
     @GetMapping("/abrirConta")
-    public String abrirConta() {
+    public String abrirConta(Model model) {
+        List<Cliente> listaClientes = clienteService.listarTodosClientes();
+        model.addAttribute("listaClientes", listaClientes);
         return "abrirConta";
     }
     
