@@ -16,7 +16,8 @@ $(document).ready(function () {
     });
 });
 
-// Função para a tabela com id 'abrirContaTbl'
+
+//Função para selecionar item na AbrirContaTbl
 $(document).ready(function () {
     var selectedRow = null;  
     var selectedId = null;   
@@ -29,11 +30,21 @@ $(document).ready(function () {
         $(this).addClass('selected');  
         selectedRow = this;           
 
-        
-        selectedId = $(this).children('td:first').text();
+        selectedId = $(this).children('td:first').text(); 
+        $('#clienteIdInput').val(selectedId); 
         alert("ID selecionado: " + selectedId); 
     });
+
+    $('#abrirContaForm').on("submit", function(event) {
+        var clienteId = $('#clienteIdInput').val(); 
+
+        if (!clienteId) {
+            event.preventDefault(); 
+            alert("Um cliente deve ser selecionado."); 
+        }
+    }); 
 });
+
 
 //Validações CadastroCliente
  $(document).ready(function() {

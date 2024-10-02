@@ -12,9 +12,7 @@ public class ContaService {
     ContaRepository contaRepository;
     
    public Conta criarConta (Conta novaConta) {
-       novaConta.setIdConta(null);
        contaRepository.save(novaConta);
-       
        return novaConta;
    }
    

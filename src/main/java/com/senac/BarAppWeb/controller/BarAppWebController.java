@@ -59,10 +59,34 @@ public class BarAppWebController {
         } else {
             listaClientes = clienteService.listarTodosClientes();
         }
-
+        
+        model.addAttribute("cliente", new Cliente());
         model.addAttribute("listaClientes", listaClientes);
         return "abrirConta";
     }
+    
+    @PostMapping("/abrirConta/salvar")
+    public String abrirConta(@RequestParam("clienteId") Integer idCliente, Model model) {
+        if (idCliente == null) {
+            model.addAttribute("mensagem", "Nenhum cliente selecionado.");
+            return "redirect:/abrirConta"; 
+        }
+
+        Cliente clienteSelecionado = clienteService.buscarPorId(idCliente);
+        if (clienteSelecionado != null) {
+            Conta novaConta = new Conta();
+            novaConta.setCliente(clienteSelecionado);
+            novaConta.setStatusPagamento(false);
+            novaConta.setValorTotal(0);
+            contaService.criarConta(novaConta);
+            model.addAttribute("mensagem", "Conta aberta com sucesso!");
+        } else {
+            model.addAttribute("mensagem", "Falha na abertura de conta.");
+        }
+
+        return "redirect:/atendimento";
+    }
+
     
     @GetMapping("/estoque")
     public String mostrarEstoque() {
