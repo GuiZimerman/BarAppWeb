@@ -31,3 +31,6 @@ a {
     font-weight: bold !important; /* Texto em negrito */
 }
 
+#msgCliente {
+    color: #ff6666;
+}

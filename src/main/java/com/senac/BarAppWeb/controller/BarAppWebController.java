@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BarAppWebController {
@@ -47,14 +47,20 @@ public class BarAppWebController {
     }
     
     @GetMapping("/abrirConta")
-    public String abrirConta(Model model) {
-        List<Cliente> listaClientes = clienteService.listarTodosClientes();
+    public String abrirConta(@RequestParam(value = "buscaNome", required = false) String nome, Model model) {
+        List<Cliente> listaClientes;
+
+        if (nome != null && !nome.isEmpty()) {
+            listaClientes = clienteService.buscarPorNome(nome);
+            if(listaClientes.isEmpty()) {
+                listaClientes = clienteService.listarTodosClientes();
+                model.addAttribute("mensagem", "Nenhum cliente com esse nome encontrado.");
+            }
+        } else {
+            listaClientes = clienteService.listarTodosClientes();
+        }
+
         model.addAttribute("listaClientes", listaClientes);
-        return "abrirConta";
-    }
-    
-    @GetMapping("/abrirConta/{nome}")
-    public String buscarNomeCliente(@PathVariable("buscaNome") String nome, Model model) {
         return "abrirConta";
     }
     

@@ -12,7 +12,7 @@
         <main class="container mt-5 p-4 bg-light shadow rounded">
             <h1 class="text-center mb-4">Abrir Conta</h1>
 
-            <form id="buscaclienteForm" th:action="@{/abrirConta}" method="get" class="d-flex align-items-end mb-4">
+            <form id="buscaclienteForm" th:action="@{/abrirConta}" method="get" class="d-flex align-items-end mb-2">
                 <div class="mb-3 flex-grow-1">
                     <label for="buscaNomeCliente" class="form-label">Cliente:</label>
                     <input type="text" class="form-control" id="buscaNome" name="buscaNome" placeholder="Digite o nome do Cliente" required>
@@ -21,6 +21,8 @@
                     <button type="submit" class="btn btn-primary ms-2">Filtrar</button>
                 </div>
             </form>
+            
+            <p id="msgCliente" th:text="${mensagem}">Teste</p>
 
             <div class="table-responsive mb-4">
                 <h3>Clientes</h3>
