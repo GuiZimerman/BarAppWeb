@@ -79,8 +79,15 @@ function atualizarProduto() {
     }
 }
 
-
-
+function deletarProduto() {
+    if (selectedId) {
+        if (confirm("Tem certeza que deseja excluir este produto?")) {
+            window.location.href = `/estoque/deletar?id=${selectedId}`;
+        }
+    } else {
+        alert("Por favor, selecione um produto primeiro.");
+    }
+}
 
 //Validações CadastroCliente
  $(document).ready(function() {

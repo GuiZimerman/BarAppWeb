@@ -154,6 +154,17 @@ public class BarAppWebController {
         redirectAttributes.addFlashAttribute("mensagem", "Produto atualizado com sucesso!");
         return "redirect:/estoque"; 
     }
+    
+    @GetMapping("/estoque/deletar")
+    public String deletarProduto(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        try {
+            produtoService.excluirProduto(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Produto excluído com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Erro ao excluir o produto.");
+        }
+        return "redirect:/estoque"; 
+    }
 
     
     @GetMapping("/contaDetalhada") 
