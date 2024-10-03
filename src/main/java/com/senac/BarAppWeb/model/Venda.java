@@ -18,9 +18,9 @@ public class Venda {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataVenda;
 
-    @ManyToOne
-    @JoinColumn(name = "idFuncionario")
-    private Funcionario funcionario;
+//    @ManyToOne
+//    @JoinColumn(name = "idFuncionario")
+//    private Funcionario funcionario;
     
     @ManyToOne
     @JoinColumn(name = "idConta")
@@ -44,13 +44,13 @@ public class Venda {
         this.dataVenda = dataVenda;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
+//    public Funcionario getFuncionario() {
+//        return funcionario;
+//    }
+//
+//    public void setFuncionario(Funcionario funcionario) {
+//        this.funcionario = funcionario;
+//    }
 
     public Conta getConta() {
         return conta;

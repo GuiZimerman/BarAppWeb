@@ -4,10 +4,14 @@ package com.senac.BarAppWeb.controller;
 import com.senac.BarAppWeb.model.Cliente;
 import com.senac.BarAppWeb.model.Conta;
 import com.senac.BarAppWeb.model.Produto;
+import com.senac.BarAppWeb.model.Venda;
+import com.senac.BarAppWeb.model.VendaProduto;
 import com.senac.BarAppWeb.service.ClienteService;
 import com.senac.BarAppWeb.service.ContaService;
 import com.senac.BarAppWeb.service.ProdutoService;
+import com.senac.BarAppWeb.service.VendaProdutoService;
 import com.senac.BarAppWeb.service.VendaService;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +36,8 @@ public class BarAppWebController {
     VendaService vendaService;
     @Autowired
     ProdutoService produtoService;
+    @Autowired
+    VendaProdutoService vendaProdutoService;
     
     @GetMapping("/")
     public String mostraInicial() {
@@ -137,10 +143,10 @@ public class BarAppWebController {
     
     @GetMapping("/estoque/atualizar")
     public String exibirPaginaAtualizar(@RequestParam("id") int id, Model model) {
-        Optional<Produto> produtoOpt = produtoService.buscarProdutoPorId(id);
+        Produto produto = produtoService.buscarProdutoPorId(id);
         
-        if (produtoOpt.isPresent()) {
-            model.addAttribute("produto", produtoOpt.get());
+        if (produto != null) {
+            model.addAttribute("produto", produto);
             return "atualizarProduto"; 
         } else {
             model.addAttribute("mensagem", "Produto não encontrado!");
@@ -194,6 +200,45 @@ public class BarAppWebController {
         model.addAttribute("conta", conta);
         model.addAttribute("listaProdutos", listaProdutos);
         return "fazerPedido";
+    }
+    
+     @PostMapping("/salvarPedido")
+    public String salvarPedido(
+        @RequestParam("contaId") int contaId, 
+        @RequestParam("produtoId") int produtoId, 
+        @RequestParam("quantidade") int quantidade, 
+        RedirectAttributes redirectAttributes) {
+
+        Conta conta = contaService.findById(contaId);
+        Produto produto = produtoService.buscarProdutoPorId(produtoId);
+
+        if (produto.getQtdEstoque() < quantidade) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Quantidade indisponível em estoque.");
+            return "redirect:/fazerPedido/" + contaId;
+        }
+
+        produto.setQtdEstoque(produto.getQtdEstoque() - quantidade);
+        produtoService.atualizarProduto(produto);
+
+        double valorVenda = quantidade * produto.getPrecoProduto();
+
+        conta.setValorTotal(conta.getValorTotal() + valorVenda);
+        contaService.atualizarConta(conta);
+
+        Venda novaVenda = new Venda();
+        novaVenda.setDataVenda(new Date());
+        novaVenda.setConta(conta);
+        novaVenda.setSubTotal(valorVenda);
+        vendaService.cadastrarVenda(novaVenda);
+
+        VendaProduto vendaProduto = new VendaProduto();
+        vendaProduto.setVenda(novaVenda);
+        vendaProduto.setProduto(produto);
+        vendaProduto.setQuantidade(quantidade);
+        vendaProdutoService.salvarVendaProduto(vendaProduto);
+
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Pedido realizado com sucesso!");
+        return "redirect:/fazerPedido/" + contaId;
     }
 }
 

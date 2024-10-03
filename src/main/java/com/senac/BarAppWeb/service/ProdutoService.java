@@ -38,8 +38,8 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Optional<Produto> buscarProdutoPorId(int idProduto) {
-        return produtoRepository.findById(idProduto);
+    public Produto buscarProdutoPorId(int idProduto) {
+        return produtoRepository.findById(idProduto).orElse(null);
     }
 }
 

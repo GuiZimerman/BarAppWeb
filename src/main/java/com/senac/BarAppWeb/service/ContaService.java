@@ -16,6 +16,19 @@ public class ContaService {
        return novaConta;
    }
    
+   public Conta atualizarConta(Conta contaAtualizada) {
+       Conta contaExistente = contaRepository.findById(contaAtualizada.getIdConta())
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada com ID: " + contaAtualizada.getIdConta()));
+
+        contaExistente.setCliente(contaAtualizada.getCliente());
+        contaExistente.setStatusPagamento(contaAtualizada.isStatusPagamento());
+        contaExistente.setValorTotal(contaAtualizada.getValorTotal());
+
+        contaRepository.save(contaExistente);
+
+        return contaExistente;
+   }
+   
    public Conta atualizarConta(Integer contaId, Conta contaAtualizada) {
         Conta contaExistente = contaRepository.findById(contaId)
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada com ID: " + contaId));

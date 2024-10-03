@@ -18,9 +18,12 @@
             </div>
 
             <form th:action="@{/salvarPedido}" method="post" class="mb-4">
+                <input type="hidden" name="contaId" th:value="${conta.idConta}" />
+                <!--<input type="hidden" name="funcionarioId" th:value="${funcionario.idFuncionario}" />-->
+                
                 <div class="mb-3">
                     <label for="produto" class="form-label">Produto</label>
-                    <select id="produto" name="produto" class="form-select" required onchange="exibirDetalhesProduto()">
+                    <select id="produto" name="produtoId" class="form-select" required onchange="exibirDetalhesProduto()">
                         <option value="">Selecione um Produto</option>
                         <option th:each="produto : ${listaProdutos}" 
                                 th:value="${produto.idProduto}" 
