@@ -7,6 +7,7 @@ import com.senac.BarAppWeb.service.ClienteService;
 import com.senac.BarAppWeb.service.ContaService;
 import com.senac.BarAppWeb.service.VendaService;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,21 +52,33 @@ public class BarAppWebController {
     }
     
     @GetMapping("/abrirConta")
-    public String abrirConta(@RequestParam(value = "buscaNome", required = false) String nome, Model model) {
-        List<Cliente> listaClientes;
+    public String abrirConta(Model model) {
+
+        List<Cliente > clientesDisponiveis = clienteService.listarClientesDisponiveis();
+        
+        model.addAttribute("cliente", new Cliente());
+        model.addAttribute("listaClientes", clientesDisponiveis);
+        return "abrirConta";
+    }
+    
+    @GetMapping("abrirConta/filtrar")
+    public String filtrarClientes(@RequestParam(value = "buscaNome", required = false) String nome, Model model) {
+
+        List<Cliente> clientesDisponiveis = clienteService.listarClientesDisponiveis();
 
         if (nome != null && !nome.isEmpty()) {
-            listaClientes = clienteService.buscarPorNome(nome);
-            if(listaClientes.isEmpty()) {
-                listaClientes = clienteService.listarTodosClientes();
-                model.addAttribute("mensagem", "Nenhum cliente com esse nome encontrado.");
+            clientesDisponiveis = clientesDisponiveis.stream()
+                .filter(cliente -> cliente.getNomeCliente().toLowerCase().contains(nome.toLowerCase()))
+                .collect(Collectors.toList());
+            
+            if (clientesDisponiveis.isEmpty()) {
+                model.addAttribute("mensagem", "Nenhum cliente com esse nome disponível.");
+                clientesDisponiveis = clienteService.listarClientesDisponiveis();
             }
-        } else {
-            listaClientes = clienteService.listarTodosClientes();
         }
         
         model.addAttribute("cliente", new Cliente());
-        model.addAttribute("listaClientes", listaClientes);
+        model.addAttribute("listaClientes", clientesDisponiveis);
         return "abrirConta";
     }
     

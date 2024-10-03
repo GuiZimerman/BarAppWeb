@@ -12,7 +12,7 @@
         <main class="container mt-5 p-4 bg-light shadow rounded">
             <h1 class="text-center mb-4">Abrir Conta</h1>
 
-            <form id="buscaclienteForm" th:action="@{/abrirConta}" method="get" class="d-flex align-items-end mb-2">
+            <form id="buscaclienteForm" th:action="@{/abrirConta/filtrar}" method="get" class="d-flex align-items-end mb-2">
                 <div class="mb-3 flex-grow-1">
                     <label for="buscaNomeCliente" class="form-label">Cliente:</label>
                     <input type="text" class="form-control" id="buscaNome" name="buscaNome" placeholder="Digite o nome do Cliente" required>

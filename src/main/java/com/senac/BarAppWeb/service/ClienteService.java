@@ -1,7 +1,9 @@
 package com.senac.BarAppWeb.service;
 
 import com.senac.BarAppWeb.model.Cliente;
+import com.senac.BarAppWeb.model.Conta;
 import com.senac.BarAppWeb.repository.ClienteRepository; 
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ public class ClienteService {
     
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private ContaService contaService;
     
     public Cliente criarCliente(Cliente novoCliente) {
         return clienteRepository.save(novoCliente);
@@ -38,4 +42,26 @@ public class ClienteService {
     public List<Cliente> listarTodosClientes() {
         return clienteRepository.findAll();
     }
+    
+    public List<Cliente> listarClientesDisponiveis() {
+        List<Cliente> clientesDisponiveis = new ArrayList<>();
+        List<Cliente >listaTodosClientes = listarTodosClientes();
+        List<Conta> listaContasAbertas = contaService.buscarTodasContasAbertas();
+        
+        for (Cliente clinte : listaTodosClientes) {
+            boolean clienteAssociado = false;
+            for (Conta conta : listaContasAbertas) {
+                if (conta.getCliente().getIdCliente() == clinte.getIdCliente()) {
+                    clienteAssociado = true;
+                    break;
+                }
+            }
+            if (!clienteAssociado) {
+                clientesDisponiveis.add(clinte);
+            }
+        }
+        return clientesDisponiveis;
+    }
+    
+    
 }
