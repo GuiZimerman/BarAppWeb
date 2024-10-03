@@ -41,7 +41,7 @@
             <div class="d-flex justify-content-center">
                 <a th:href="@{/atendimento}" class="btn btn-secondary m-1">Voltar</a>
                 <a th:href="@{/fazerPedido/{id}(id=${conta.idConta})}" class="btn btn-secondary m-1">Fazer Pedido</a>
-                <a th:href="@{/finalizar/{id}(id=$conta.idConta)}" 
+                <a th:href="@{/finalizar/{id}(id=${conta.idConta})}"
                    class="btn btn-primary m-1" 
                    onclick="confirmarFinalizarConta(event, ${conta.idConta})">Finalizar Conta</a>
 
