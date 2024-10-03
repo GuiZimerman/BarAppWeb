@@ -5,12 +5,14 @@ import com.senac.BarAppWeb.model.Cliente;
 import com.senac.BarAppWeb.model.Conta;
 import com.senac.BarAppWeb.service.ClienteService;
 import com.senac.BarAppWeb.service.ContaService;
+import com.senac.BarAppWeb.service.VendaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +23,8 @@ public class BarAppWebController {
     ContaService contaService;
     @Autowired
     ClienteService clienteService;
+    @Autowired
+    VendaService vendaService;
     
     @GetMapping("/")
     public String mostraInicial() {
@@ -97,6 +101,17 @@ public class BarAppWebController {
     public String mostrarContaDetalhada() {
         return "contaDetalhada";
     }
+    
+    @GetMapping("/contaDetalhada/{id}")
+    public String detalharConta(@PathVariable int id, Model model) {
+        Conta conta = contaService.findById(id);
+//        List<Object[]> detalhesVenda = vendaService.findVendaDetalhesByContaId(id);
+
+        model.addAttribute("conta", conta);
+//        model.addAttribute("detalhesVenda", detalhesVenda);
+        return "contaDetalhada";
+    }
+
     
     @GetMapping("/fazerPedido")
     public String mostrarFazerPedido(){
