@@ -46,7 +46,9 @@ public class BarAppWebController {
     
     @GetMapping("/atendimento")
     public String mostraAtendimento(Model model){
-        List<Conta> listaContasAbertas = contaService.findAll();
+        List<Conta> listaContasAbertas = contaService.buscarTodasContasAbertas();
+        boolean nenhumaConta = listaContasAbertas.isEmpty();
+        model.addAttribute("nenhumaConta", nenhumaConta);
         model.addAttribute("listaContaAbertas", listaContasAbertas);
         return "atendimento";
     }
@@ -240,5 +242,24 @@ public class BarAppWebController {
         redirectAttributes.addFlashAttribute("mensagemSucesso", "Pedido realizado com sucesso!");
         return "redirect:/fazerPedido/" + contaId;
     }
+    
+    @GetMapping("/finalizar/{id}")
+    public String finalizarConta(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        try {
+            Conta conta = contaService.findById(id);
+            if (conta != null) {
+                conta.setStatusPagamento(true);
+                contaService.atualizarConta(conta);
+                redirectAttributes.addFlashAttribute("successMessage", "Conta finalizada com sucesso.");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Conta não encontrada.");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao finalizar a conta.");
+        }
+        return "redirect:/atendimento"; 
+
+    }
+    
 }
 

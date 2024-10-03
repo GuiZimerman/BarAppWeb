@@ -35,6 +35,18 @@ function fazerPedido() {
 }
 
 
+function finalizarConta() {
+        if (selectedId) {
+            if (confirm("Você tem certeza que deseja finalizar a conta?")) {
+            window.location.href = `/finalizar/${selectedId}`;
+            }
+        } else {
+            alert("Por favor, selecione uma conta primeiro.");
+        }
+}
+
+
+
 //Função para selecionar item na AbrirContaTbl
 $(document).ready(function () {
     var selectedRow = null;  
