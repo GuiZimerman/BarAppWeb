@@ -3,8 +3,10 @@ package com.senac.BarAppWeb.controller;
 
 import com.senac.BarAppWeb.model.Cliente;
 import com.senac.BarAppWeb.model.Conta;
+import com.senac.BarAppWeb.model.Produto;
 import com.senac.BarAppWeb.service.ClienteService;
 import com.senac.BarAppWeb.service.ContaService;
+import com.senac.BarAppWeb.service.ProdutoService;
 import com.senac.BarAppWeb.service.VendaService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class BarAppWebController {
@@ -26,6 +29,8 @@ public class BarAppWebController {
     ClienteService clienteService;
     @Autowired
     VendaService vendaService;
+    @Autowired
+    ProdutoService produtoService;
     
     @GetMapping("/")
     public String mostraInicial() {
@@ -104,10 +109,29 @@ public class BarAppWebController {
         return "redirect:/atendimento";
     }
 
-    
     @GetMapping("/estoque")
-    public String mostrarEstoque() {
+    public String mostrarEstoque(Model model) {
+        List<Produto> listaProdutos = produtoService.buscarTodosProdutos();
+        
+        model.addAttribute("listaProdutos", listaProdutos);
         return "estoque";
+    }
+    
+    @GetMapping("/estoque/adicionar")
+    public String mostraAdicionarProduto(Model model){
+        Produto produto = new Produto();
+        
+        model.addAttribute("produto", produto);
+        return "adicionarProduto";
+    }
+    
+    @PostMapping("/estoque/adicionar")
+    public String adicionarProduto(@ModelAttribute Produto produto, RedirectAttributes redirectAttributes) {
+
+        produtoService.salvarProduto(produto);
+
+        redirectAttributes.addFlashAttribute("mensagem", "Produto adicionado com sucesso!");
+        return "redirect:/estoque"; 
     }
     
     @GetMapping("/contaDetalhada") 
@@ -118,10 +142,10 @@ public class BarAppWebController {
     @GetMapping("/contaDetalhada/{id}")
     public String detalharConta(@PathVariable int id, Model model) {
         Conta conta = contaService.findById(id);
-//        List<Object[]> detalhesVenda = vendaService.findVendaDetalhesByContaId(id);
+        List<Object[]> detalhesVenda = vendaService.findVendaDetalhesByContaId(id);
 
         model.addAttribute("conta", conta);
-//        model.addAttribute("detalhesVenda", detalhesVenda);
+        model.addAttribute("detalhesVenda", detalhesVenda);
         return "contaDetalhada";
     }
 

@@ -25,19 +25,19 @@
                     </thead>
                     <tbody>
                         <tr th:each="produto : ${listaProdutos}">
-                            <td th:text="${produto.id}"></td>
-                            <td th:text="${produto.nome}"></td>
-                            <td th:text="${produto.quantidade}"></td>
-                            <td th:text="${produto.valor}"></td>
+                            <td th:text="${produto.idProduto}"></td>
+                            <td th:text="${produto.nomeProduto}"></td>
+                            <td th:text="${produto.qtdEstoque}"></td>
+                            <td th:text="${produto.precoProduto}"></td>
                         </tr>
                     </tbody>
                 </table> 
             </div>
 
             <div class="d-flex justify-content-center">
-                <a th:href="@{/estoque/delete}" class="btn btn-secondary m-1">Excluir Produto</a>
-                <a th:href="@{/estoque/update}" class="btn btn-secondary m-1">Atualizar Produto</a>
-                <a th:href="@{/estoque/add}" class="btn btn-primary m-1">Adicionar Produto</a>
+                <a th:href="@{/estoque/deletar}" class="btn btn-secondary m-1">Excluir Produto</a>
+                <a th:href="@{/estoque/atualizar}" class="btn btn-secondary m-1">Atualizar Produto</a>
+                <a th:href="@{/estoque/adicionar}" class="btn btn-primary m-1">Adicionar Produto</a>
             </div>
 
         </main> 
