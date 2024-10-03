@@ -22,10 +22,10 @@ public class BarAppWebController {
     @Autowired
     ClienteService clienteService;
     
-//    @GetMapping("/")
-//    public String mostraInicial() {
-//        return "redirect:/index";
-//    }
+    @GetMapping("/")
+    public String mostraInicial() {
+        return "redirect:/atendimento";
+    }
     
     @GetMapping("/atendimento")
     public String mostraAtendimento(Model model){
