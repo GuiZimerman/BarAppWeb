@@ -1,34 +1,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>BarAppWeb - Adicionar Produto</title>
+    <title>BarAppWeb - Atualizar Produto</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
     <header th:insert="header.html"></header>
     <main class="container mt-5 p-4 bg-light shadow rounded">
-        <h1 class="text-center mb-4">Adicionar Produto</h1>
+        <h1 class="text-center mb-4">Atualizar Produto</h1>
 
-        <form th:action="@{/estoque/adicionar}" method="post" class="mb-4">
+        <form th:action="@{/estoque/atualizar}" method="post" class="mb-4">
+            <input type="hidden" th:name="idProduto" th:value="${produto.idProduto}"/>
+
             <div class="mb-3">
                 <label for="nomeProduto" class="form-label">Nome do Produto:</label>
-                <input type="text" id="nomeProduto" name="nomeProduto" class="form-control" required placeholder="Digite o nome do produto">
+                <input type="text" id="nomeProduto" name="nomeProduto" class="form-control" th:value="${produto.nomeProduto}" required placeholder="Digite o nome do produto">
             </div>
             <div class="mb-3">
                 <label for="precoProduto" class="form-label">Preço do Produto:</label>
-                <input type="number" id="precoProduto" name="precoProduto" class="form-control" required step="0.01" placeholder="Digite o preço do produto">
+                <input type="number" id="precoProduto" name="precoProduto" class="form-control" th:value="${produto.precoProduto}" required step="0.01" placeholder="Digite o preço do produto">
             </div>
             <div class="mb-3">
                 <label for="qtdEstoque" class="form-label">Quantidade em Estoque:</label>
-                <input type="number" id="qtdEstoque" name="qtdEstoque" class="form-control" required min="0" placeholder="Digite a quantidade">
+                <input type="number" id="qtdEstoque" name="qtdEstoque" class="form-control" th:value="${produto.qtdEstoque}" required min="0" placeholder="Digite a quantidade">
             </div>
+            
 
         <div class="d-flex justify-content-center">
             <a th:href="@{/estoque}" class="btn btn-secondary m-1">Voltar para Estoque</a>
-            <button type="submit" class="btn btn-primary m-1">Adicionar Produto</button>
+            <button type="submit" class="btn btn-primary m-1">Atualizar Produto</button>
         </div>
         </form>
     </main>
@@ -36,6 +38,5 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>

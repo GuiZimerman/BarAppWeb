@@ -9,6 +9,7 @@ import com.senac.BarAppWeb.service.ContaService;
 import com.senac.BarAppWeb.service.ProdutoService;
 import com.senac.BarAppWeb.service.VendaService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,7 +119,7 @@ public class BarAppWebController {
     }
     
     @GetMapping("/estoque/adicionar")
-    public String mostraAdicionarProduto(Model model){
+    public String exibirPaginaAdicionarProduto(Model model){
         Produto produto = new Produto();
         
         model.addAttribute("produto", produto);
@@ -133,6 +134,27 @@ public class BarAppWebController {
         redirectAttributes.addFlashAttribute("mensagem", "Produto adicionado com sucesso!");
         return "redirect:/estoque"; 
     }
+    
+    @GetMapping("/estoque/atualizar")
+    public String exibirPaginaAtualizar(@RequestParam("id") int id, Model model) {
+        Optional<Produto> produtoOpt = produtoService.buscarProdutoPorId(id);
+        
+        if (produtoOpt.isPresent()) {
+            model.addAttribute("produto", produtoOpt.get());
+            return "atualizarProduto"; 
+        } else {
+            model.addAttribute("mensagem", "Produto não encontrado!");
+            return "redirect:/estoque"; 
+        }
+    }
+    
+    @PostMapping("/estoque/atualizar")
+    public String atualizarProduto(@ModelAttribute Produto produto, RedirectAttributes redirectAttributes) {
+        produtoService.salvarProduto(produto); 
+        redirectAttributes.addFlashAttribute("mensagem", "Produto atualizado com sucesso!");
+        return "redirect:/estoque"; 
+    }
+
     
     @GetMapping("/contaDetalhada") 
     public String mostrarContaDetalhada() {

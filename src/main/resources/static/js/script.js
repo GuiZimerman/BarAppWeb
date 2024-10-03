@@ -56,6 +56,32 @@ $(document).ready(function () {
 });
 
 
+// Função para a tabela com id 'estoqueTabela'
+$(document).ready(function () {
+    $('#estoqueTabela tbody tr').click(function () {
+        if (selectedRow) {
+            $(selectedRow).removeClass('selected');
+        }
+
+        $(this).addClass('selected');
+        selectedRow = this;
+
+        selectedId = $(this).children('td:first').text();
+        alert("ID selecionado: " + selectedId);
+    });
+});
+
+function atualizarProduto() {
+    if (selectedId) {
+        window.location.href = `/estoque/atualizar?id=${selectedId}`; 
+    } else {
+        alert("Por favor, selecione um produto primeiro.");
+    }
+}
+
+
+
+
 //Validações CadastroCliente
  $(document).ready(function() {
                 $('#clienteForm').on('submit', function(event) {
