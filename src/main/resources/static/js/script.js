@@ -45,6 +45,13 @@ function finalizarConta() {
         }
 }
 
+function confirmarFinalizarConta(event, id) {
+    event.preventDefault();
+
+    if (confirm("Você tem certeza que deseja finalizar a conta?")) {
+        window.location.href = `/finalizar/${id}`;
+    }
+}
 
 
 //Função para selecionar item na AbrirContaTbl
