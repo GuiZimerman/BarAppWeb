@@ -14,7 +14,6 @@ $(document).ready(function () {
         selectedRow = this; 
 
         selectedId = $(this).children('td:first').text(); 
-        alert("ID selecionado: " + selectedId); 
     });
 });
 
@@ -22,6 +21,14 @@ $(document).ready(function () {
 function detalharConta() {
     if (selectedId) {
         window.location.href = `/contaDetalhada/${selectedId}`;
+    } else {
+        alert("Por favor, selecione uma conta primeiro.");
+    }
+}
+
+function fazerPedido() {
+    if (selectedId) {
+        window.location.href = `/fazerPedido/${selectedId}`;
     } else {
         alert("Por favor, selecione uma conta primeiro.");
     }
@@ -67,7 +74,6 @@ $(document).ready(function () {
         selectedRow = this;
 
         selectedId = $(this).children('td:first').text();
-        alert("ID selecionado: " + selectedId);
     });
 });
 
@@ -87,6 +93,18 @@ function deletarProduto() {
     } else {
         alert("Por favor, selecione um produto primeiro.");
     }
+}
+
+
+function exibirDetalhesProduto() {
+    var selectProduto = document.getElementById("produto");
+    var selectedOption = selectProduto.options[selectProduto.selectedIndex];
+
+    var valorProduto = selectedOption.getAttribute("data-valor");
+    var quantidadeProduto = selectedOption.getAttribute("data-quantidade");
+
+    document.getElementById("valorProduto").innerText = valorProduto ? valorProduto : "";
+    document.getElementById("quantidadeProduto").innerText = quantidadeProduto ? quantidadeProduto : "";
 }
 
 //Validações CadastroCliente

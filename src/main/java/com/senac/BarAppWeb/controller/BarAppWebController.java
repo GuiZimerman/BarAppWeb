@@ -183,8 +183,16 @@ public class BarAppWebController {
     }
 
     
-    @GetMapping("/fazerPedido")
-    public String mostrarFazerPedido(){
+    @GetMapping("/fazerPedido/{id}")
+    public String mostrarFazerPedido(@PathVariable int id, Model model){
+        Conta conta = contaService.findById(id);
+        Cliente cliente = conta.getCliente();
+        
+        List<Produto> listaProdutos = produtoService.buscarTodosProdutos();
+        
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("conta", conta);
+        model.addAttribute("listaProdutos", listaProdutos);
         return "fazerPedido";
     }
 }

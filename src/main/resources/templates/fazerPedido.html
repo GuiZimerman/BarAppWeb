@@ -13,20 +13,26 @@
             <h1 class="text-center mb-4">Fazer Pedido</h1>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3>Nome: <span>Rafael Almeida</span></h3>
-                <h3>Valor da Conta: <span>R$ 85,00</span></h3>
+                <h3>Nome: <span th:text="${cliente.nomeCliente}"></span></h3>
+                <h3>Valor da Conta: <span th:text="${conta.valorTotal}"></span></h3>
             </div>
 
-            <form th:action="@{/pedido}" method="post" class="mb-4">
+            <form th:action="@{/salvarPedido}" method="post" class="mb-4">
                 <div class="mb-3">
                     <label for="produto" class="form-label">Produto</label>
-                    <select id="produto" name="produto" class="form-select" required>
+                    <select id="produto" name="produto" class="form-select" required onchange="exibirDetalhesProduto()">
                         <option value="">Selecione um Produto</option>
-                        <option value="1">Cerveja</option>
-                        <option value="2">Refrigerante</option>
-                        <option value="3">Água</option>
-                        <option value="4">Suco</option>
+                        <option th:each="produto : ${listaProdutos}" 
+                                th:value="${produto.idProduto}" 
+                                th:data-valor="${produto.precoProduto}"
+                                th:data-quantidade="${produto.qtdEstoque}"
+                                th:text="${produto.nomeProduto}">
+                        </option>
                     </select>
+                    <div class="mt-1">
+                        <span>Valor: R$ <span id="valorProduto"></span></span>
+                        <span class="ms-3">Quantidade: <span id="quantidadeProduto"></span></span>
+                    </div>
                 </div>
 
                 <div class="mb-3">
