@@ -3,17 +3,21 @@ package com.senac.BarAppWeb.controller;
 
 import com.senac.BarAppWeb.model.Cliente;
 import com.senac.BarAppWeb.model.Conta;
+import com.senac.BarAppWeb.model.Funcionario;
 import com.senac.BarAppWeb.model.Produto;
 import com.senac.BarAppWeb.model.Venda;
 import com.senac.BarAppWeb.model.VendaProduto;
+import com.senac.BarAppWeb.security.Criptografia;
 import com.senac.BarAppWeb.service.ClienteService;
 import com.senac.BarAppWeb.service.ContaService;
+import com.senac.BarAppWeb.service.FuncionarioService;
 import com.senac.BarAppWeb.service.ProdutoService;
 import com.senac.BarAppWeb.service.VendaProdutoService;
 import com.senac.BarAppWeb.service.VendaService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,19 +43,57 @@ public class BarAppWebController {
     ProdutoService produtoService;
     @Autowired
     VendaProdutoService vendaProdutoService;
+    @Autowired
+    FuncionarioService funcionarioService;
     
     @GetMapping("/")
     public String mostraInicial() {
-        return "redirect:/atendimento";
+        return "redirect:/login";
+    }
+    
+    @RequestMapping("/login")
+    public String mostraLogin() {
+        return "login";
+    }
+    
+    @PostMapping("/login/valida")
+    public String autentica(HttpServletRequest request, @RequestParam("login") String login, @RequestParam("senha") String senha) {
+        
+        HttpSession sessao = request.getSession();
+        
+        String senhaCripto = Criptografia.getMd5(senha);
+        
+        Funcionario funcionario = funcionarioService.validaFuncionario(login, senhaCripto);
+        
+        
+        if(sessao != null && funcionario != null ){
+            sessao.setAttribute("funcionario", funcionario);
+            return "redirect:/atendimento";
+        } else {
+            return "redirect:/login";
+        }
     }
     
     @GetMapping("/atendimento")
-    public String mostraAtendimento(Model model){
-        List<Conta> listaContasAbertas = contaService.buscarTodasContasAbertas();
-        boolean nenhumaConta = listaContasAbertas.isEmpty();
-        model.addAttribute("nenhumaConta", nenhumaConta);
-        model.addAttribute("listaContaAbertas", listaContasAbertas);
-        return "atendimento";
+    public String mostraAtendimento(HttpServletRequest request, Model model){
+        HttpSession sessao = request.getSession();
+        Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
+        boolean validaFunc = false;
+        if(funcionario != null) {
+            String nomeFunc = funcionario.getNome();
+            validaFunc = funcionarioService.existsFuncionario(nomeFunc);
+        }
+        
+        if(sessao != null && funcionario != null){
+            List<Conta> listaContasAbertas = contaService.buscarTodasContasAbertas();
+            boolean nenhumaConta = listaContasAbertas.isEmpty();
+            model.addAttribute("nenhumaConta", nenhumaConta);
+            model.addAttribute("listaContaAbertas", listaContasAbertas);
+            model.addAttribute("funcionario" , funcionario);
+            return "atendimento";
+        } else {
+            return "redirect:/login";
+        }
     }
     
     @GetMapping("/cadastroCliente")
