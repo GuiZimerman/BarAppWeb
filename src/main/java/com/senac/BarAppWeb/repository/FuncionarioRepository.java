@@ -10,6 +10,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
     @Query("SELECT f FROM Funcionario f WHERE f.usuario.login = :login AND f.usuario.senha = :senha")
     Funcionario validaFuncionario(@Param("login") String login, @Param("senha") String senha);
     
-    boolean existsByNome(String nome);
+    boolean existsByNomeAndCargo_NivelCargo(String nome, String nivelCargo);
     
 }

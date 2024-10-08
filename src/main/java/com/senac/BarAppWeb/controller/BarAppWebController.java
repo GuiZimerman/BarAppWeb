@@ -81,10 +81,11 @@ public class BarAppWebController {
         boolean validaFunc = false;
         if(funcionario != null) {
             String nomeFunc = funcionario.getNome();
-            validaFunc = funcionarioService.existsFuncionario(nomeFunc);
+            String cargo = funcionario.getCargo().getNivelCargo();
+            validaFunc = funcionarioService.existsFuncionario(nomeFunc,cargo);
         }
         
-        if(sessao != null && funcionario != null){
+        if(sessao != null && funcionario != null && validaFunc){
             List<Conta> listaContasAbertas = contaService.buscarTodasContasAbertas();
             boolean nenhumaConta = listaContasAbertas.isEmpty();
             model.addAttribute("nenhumaConta", nenhumaConta);

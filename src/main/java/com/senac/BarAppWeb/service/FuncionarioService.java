@@ -14,7 +14,7 @@ public class FuncionarioService {
         return funcionarioRepository.validaFuncionario(login, senha);
     }
     
-    public boolean existsFuncionario(String nome) {
-        return funcionarioRepository.existsByNome(nome);
+    public boolean existsFuncionario(String nome, String cargo) {
+        return funcionarioRepository.existsByNomeAndCargo_NivelCargo(nome, cargo);
     }
 }
