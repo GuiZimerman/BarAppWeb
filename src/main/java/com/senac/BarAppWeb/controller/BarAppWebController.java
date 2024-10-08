@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -74,8 +75,18 @@ public class BarAppWebController {
         }
     }
     
+    @RequestMapping("/logout")
+    public ModelAndView fazLogoff(HttpServletRequest request) {
+        HttpSession sessao = request.getSession();
+        if (sessao != null) {
+        sessao.removeAttribute("funcionario");
+        }
+        return new ModelAndView("redirect:/");
+    }
+    
+    
     @GetMapping("/atendimento")
-    public String mostraAtendimento(HttpServletRequest request, Model model){
+    public ModelAndView mostraAtendimento(HttpServletRequest request, Model model){
         HttpSession sessao = request.getSession();
         Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
         boolean validaFunc = false;
@@ -91,15 +102,24 @@ public class BarAppWebController {
             model.addAttribute("nenhumaConta", nenhumaConta);
             model.addAttribute("listaContaAbertas", listaContasAbertas);
             model.addAttribute("funcionario" , funcionario);
-            return "atendimento";
+            return new ModelAndView("atendimento");
         } else {
-            return "redirect:/login";
+            return new ModelAndView("redirect:/login");
         }
     }
     
     @GetMapping("/cadastroCliente")
-    public String mostrarCadastroCliente(Model model) {
-        return "cadastroCliente";
+    public String mostrarCadastroCliente(HttpServletRequest request, Model model) {
+        HttpSession sessao = request.getSession();
+        Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
+        
+        if(sessao != null && funcionarioService.validacaoSessaoFunc(funcionario)){
+            model.addAttribute("funcionario" , funcionario);
+            return "cadastroCliente";
+        } else {
+            return "redirect:/login";
+        }
+        
     }
     
     @PostMapping("/cadastroCliente")
@@ -110,13 +130,20 @@ public class BarAppWebController {
     }
     
     @GetMapping("/abrirConta")
-    public String abrirConta(Model model) {
-
-        List<Cliente > clientesDisponiveis = clienteService.listarClientesDisponiveis();
+    public String abrirConta(HttpServletRequest request, Model model) {
+        HttpSession sessao = request.getSession();
+        Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
         
-        model.addAttribute("cliente", new Cliente());
-        model.addAttribute("listaClientes", clientesDisponiveis);
-        return "abrirConta";
+        if(sessao != null && funcionarioService.validacaoSessaoFunc(funcionario)){
+            List<Cliente > clientesDisponiveis = clienteService.listarClientesDisponiveis();
+
+            model.addAttribute("funcionario" , funcionario);
+            model.addAttribute("cliente", new Cliente());
+            model.addAttribute("listaClientes", clientesDisponiveis);
+            return "abrirConta";
+        } else {
+            return "redirect:/login";
+        }
     }
     
     @GetMapping("abrirConta/filtrar")
@@ -163,11 +190,21 @@ public class BarAppWebController {
     }
 
     @GetMapping("/estoque")
-    public String mostrarEstoque(Model model) {
-        List<Produto> listaProdutos = produtoService.buscarTodosProdutos();
+    public String mostrarEstoque(HttpServletRequest request, Model model) {
+        HttpSession sessao = request.getSession();
+        Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
         
-        model.addAttribute("listaProdutos", listaProdutos);
-        return "estoque";
+        if(sessao != null && funcionarioService.validacaoSessaoFunc(funcionario)){
+            List<Produto> listaProdutos = produtoService.buscarTodosProdutos();
+
+            model.addAttribute("funcionario" , funcionario);
+            model.addAttribute("listaProdutos", listaProdutos);
+            return "estoque";
+        } else {
+            return "redirect:/login";
+        }
+        
+        
     }
     
     @GetMapping("/estoque/adicionar")
@@ -220,8 +257,18 @@ public class BarAppWebController {
 
     
     @GetMapping("/contaDetalhada") 
-    public String mostrarContaDetalhada() {
-        return "contaDetalhada";
+    public String mostrarContaDetalhada(HttpServletRequest request, Model model) {
+        HttpSession sessao = request.getSession();
+        Funcionario funcionario = (Funcionario) sessao.getAttribute("funcionario");
+        
+        if(sessao != null && funcionarioService.validacaoSessaoFunc(funcionario)){
+            model.addAttribute("funcionario" , funcionario);
+            return "contaDetalhada";
+        } else {
+            return "redirect:/login";
+        }
+        
+        
     }
     
     @GetMapping("/contaDetalhada/{id}")
